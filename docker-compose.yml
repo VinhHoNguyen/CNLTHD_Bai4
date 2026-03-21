@@ -1,0 +1,49 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: inventory-mysql
+    environment:
+      MYSQL_DATABASE: inventory_db
+      MYSQL_ROOT_PASSWORD: 123456
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p123456"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  zipkin:
+    image: openzipkin/zipkin:3
+    container_name: inventory-zipkin
+    ports:
+      - "9411:9411"
+
+  discovery-server:
+    build:
+      context: ../discovery-server
+      dockerfile: Dockerfile
+    container_name: inventory-discovery-server
+    ports:
+      - "8761:8761"
+
+  inventory-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inventory-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/inventory_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://discovery-server:8761/eureka
+      MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://zipkin:9411/api/v2/spans
+    depends_on:
+      mysql:
+        condition: service_healthy
+      discovery-server:
+        condition: service_started
+      zipkin:
+        condition: service_started
+    ports:
+      - "8083:8083"

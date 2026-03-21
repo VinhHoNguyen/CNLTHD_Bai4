@@ -1,0 +1,10 @@
+services:
+  inventory-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inventory-service-solo
+    environment:
+      SPRING_PROFILES_ACTIVE: standalone
+    ports:
+      - "8083:8083"
