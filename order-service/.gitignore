@@ -1,0 +1,72 @@
+# Logs
+logs
+*.log
+log.txt
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+*.iml
+*.iws
+*.ipr
+
+# Maven
+target/
+.m2/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+build/
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+
+# Build artifacts
+*.jar
+*.war
+*.ear
+*.zip
+
+# Database
+*.db
+*.sqlite
+*.h2.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Docker
+docker_volumes/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Node (if applicable)
+node_modules/
+package-lock.json
+npm-debug.log
+
+# Test coverage
+coverage/
+.nyc_output/
+jacoco*.exec
+
+# SonarQube
+.sonarqube/
+.sonar/
