@@ -138,6 +138,27 @@ services:
       MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://zipkin:9411/api/v2/spans
       SPRING_APPLICATION_NAME: order-service
     ports:
+      - "8081:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: api_gateway
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    environment:
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_APPLICATION_NAME: api-gateway
+    ports:
       - "8080:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]

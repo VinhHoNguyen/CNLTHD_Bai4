@@ -21,7 +21,7 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Copy JAR from build stage
-COPY --from=build /app/target/order-service-*.jar app.jar
+COPY --from=build /app/target/api-gateway-*.jar app.jar
 
 # Expose port
 EXPOSE 8080
